@@ -1,0 +1,1 @@
+fastapi run /opt/fastapi/app

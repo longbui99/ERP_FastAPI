@@ -1,0 +1,1 @@
+python3 -m debugpy --listen 0.0.0.0:8888 /opt/fastapi/.debug -c /opt/fastapi/config/fastapi.conf

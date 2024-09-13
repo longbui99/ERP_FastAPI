@@ -1,0 +1,36 @@
+version: "3.9"
+name: "fastapi17"
+services:
+  fastapi:
+
+    image: fastapi-arm
+    build: ../docker
+    ports:
+      - "8000:8000"
+      - "8888:8888"
+    volumes:
+      - ../../:/opt/fastapi
+      - fastapi_data:/home/fastapi/.local/share/fastapi
+    command: bash -c "$${EXEC_COMAND} && tail -f /dev/null"
+    environment:
+      EXEC_COMAND: "/opt/fastapi/build/runner/run.sh"
+    depends_on:
+      - fastapi_postgres
+    restart: unless-stopped
+    tty: true
+  fastapi_postgres:
+    image: postgres:${POSTGRES_VERSION:-13}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: fastapi
+      POSTGRES_PASSWORD: fastapi
+    tty: true
+
+volumes:
+  fastapi_data:
+  postgres_data:
