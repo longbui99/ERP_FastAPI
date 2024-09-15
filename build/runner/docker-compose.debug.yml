@@ -13,7 +13,8 @@ services:
       - fastapi_data:/home/fastapi/.local/share/fastapi
     command: bash -c "$${EXEC_COMAND} && tail -f /dev/null"
     environment:
-      EXEC_COMAND: "/opt/fastapi/build/runner/run.sh"
+      EXEC_COMAND: "/opt/fastapi/build/runner/debug.sh"
+    env_file: ../../env/sys.env
     depends_on:
       - fastapi_postgres
     restart: unless-stopped
