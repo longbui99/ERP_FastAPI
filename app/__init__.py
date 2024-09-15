@@ -1,7 +1,10 @@
 from . import base
-from . import const
-from . import models
-from . import router
-from . import utils
+from .base.main import main
 
-from .base import app
+main()
+from .base.app import app
+
+from . import data
+from . import utils
+from . import models
+from . import routers

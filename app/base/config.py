@@ -1,3 +1,5 @@
+import os
+
 from typing import Any
 from configparser import RawConfigParser
 
@@ -13,14 +15,15 @@ class ConfigManager:
         return self.config.get(key, default)
 
     def parse_config(self, fname=None) -> None:
+        fname = fname.strip()
         file_path = fname
         if not file_path:
             file_path = self.fname
         if not file_path:
             return
-        config = RawConfigParser()
-        config.read([fname])
-        self.config = dict(config.items('options'))
-
+        raw_config = RawConfigParser()
+        raw_config.read([fname])
+        self.config = dict(raw_config._sections)
+ 
 
 config = ConfigManager()
