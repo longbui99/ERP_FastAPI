@@ -1,7 +1,6 @@
 from . import base
 from .base.main import main
 
-main()
 from .base.app import app
 
 from . import data

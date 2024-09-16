@@ -1,1 +1,1 @@
-fastapi run /opt/fastapi/app
+fastapi run /opt/fastapi/app --workers 4
