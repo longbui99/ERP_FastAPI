@@ -1,9 +1,8 @@
 from os import environ
 import jwt
 
-from fastapi.encoders import jsonable_encoder
 
-from app.models.login import LoginCredential
+from app.models.users import User, _User
 from app.base.exceptions import ServerMisConfigured
 
 
@@ -13,12 +12,12 @@ def _get_os_key():
         raise ServerMisConfigured("LOGIN SECURITY KEY NOT FOUND")
     return key
 
-def encode_login_to_jwt(login: LoginCredential) -> str:
+def encode_json_to_jwt(user: dict) -> str:
     key = _get_os_key()
-    encoded_jwt = jwt.encode(jsonable_encoder(login), key, algorithm="HS256")
+    encoded_jwt = jwt.encode(user, key, algorithms="HS256")
     return encoded_jwt
 
-def decode_jwt_to_login(jwt: str) -> LoginCredential:
+def decode_jwt_to_json(jwt_key: str) -> dict:
     key = _get_os_key()
-    login = LoginCredential(**jwt.decode(jwt, key, algorithm="HS256"))
-    return login
+    user = jwt.decode(jwt_key, key, algorithms="HS256")
+    return user
