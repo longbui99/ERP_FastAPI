@@ -2,13 +2,13 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from app.base.sql_db import *
 from app.base.config import config
-from app.base.main import load_args
+from app.base.sql_db import *
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await init_postgres_connection(**config['database'])
+    dbconfig = config['database']
+    await init_postgres_connection(user=dbconfig['user'], password=dbconfig['password'], host=dbconfig['host'], port=dbconfig['port'], database=dbconfig['database'], connection_type=dbconfig['connection_type'])
     yield
 
 app = FastAPI(lifespan=lifespan)
