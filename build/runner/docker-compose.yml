@@ -16,6 +16,7 @@ services:
     env_file: ../../env/sys.env
     depends_on:
       - fastapi_postgres
+      - redis
     restart: unless-stopped
     tty: true
   fastapi_postgres:
@@ -30,6 +31,21 @@ services:
       POSTGRES_USER: fastapi
       POSTGRES_PASSWORD: fastapi
     tty: true
+  redis:
+    image: redis:7.2-bookworm
+    expose:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 50
+      start_period: 30s
+    environment:
+      REDIS_USERNAME: "redis"
+      REDIS_PASSWORD: "redis"
+      REDIS_DISABLE_DEFAULT_USER: True
+    restart: always
 
 volumes:
   fastapi_data:

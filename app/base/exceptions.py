@@ -6,6 +6,8 @@ class ServerError(Exception):
 class ServerMisConfigured(ServerError):
     pass
 
+class InternalServerError(ServerError):
+    pass
 
 
 class ClientError(Exception):

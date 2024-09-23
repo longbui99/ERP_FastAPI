@@ -3,5 +3,5 @@ fastapi[standard]
 debugpy
 uvicorn
 pyjwt
-tortoise-orm[psycopg]
-asyncpg
+tortoise-orm[asyncpg]
+redis
