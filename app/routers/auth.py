@@ -27,21 +27,15 @@ async def _login(username: Annotated[str, Form()], password: Annotated[str, Form
 async def authorized_user(token: Annotated[str, Depends(oauth2_scheme)]):
     connection = rconn.conn
     session_check = connection.get(token)
-    if not session_check:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    user = _User(**decode_jwt_to_json(token))
-    if user:
-        return user
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+    if session_check:
+        user = _User(**decode_jwt_to_json(token))
+        if user:
+            return user
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid authentication credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
 
 @app.post('/login')
 def get_login(user: Annotated[_User, Depends(_login)]):
